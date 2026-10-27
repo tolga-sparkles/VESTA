@@ -6,19 +6,23 @@ IP adresi veya alan adını AbuseIPDB, AlienVault OTX, VirusTotal, ThreatFox, UR
 
 Görseller, gerçek servis sorgusu veya oturum bilgisi kullanılmadan temsili API yanıtlarıyla oluşturuldu. `203.0.113.42` belgeleme için ayrılmış bir IP adresidir; gösterilen risk puanı ve haber başlıkları gerçek istihbarat verisi değildir.
 
-### IP analizi
+<table>
+  <tr><th>IP analizi</th><th>Haber akışı</th></tr>
+  <tr>
+    <td><a href="docs/screenshots/analiz.png"><img src="docs/screenshots/analiz.png" alt="VESTA IP analizi" width="440"></a></td>
+    <td><a href="docs/screenshots/haberler.png"><img src="docs/screenshots/haberler.png" alt="VESTA haber akışı" width="440"></a></td>
+  </tr>
+</table>
 
-![VESTA IP analizi: kaynak sonuçları, risk puanı, teknik profil ve açık portlar](docs/screenshots/analiz.png)
-
-### Haber akışı
-
-![VESTA haber akışı: kaynaklar, filtreler ve temsili haberler](docs/screenshots/haberler.png)
-
-### Giriş ve mobil görünüm
-
-<img src="docs/screenshots/giris.png" alt="VESTA konsola giriş ekranı" width="700">
-
-<img src="docs/screenshots/mobil.png" alt="VESTA mobil analiz görünümü" width="390">
+<details>
+  <summary>Giriş ve mobil görünüm</summary>
+  <table>
+    <tr>
+      <td><a href="docs/screenshots/giris.png"><img src="docs/screenshots/giris.png" alt="VESTA giriş ekranı" width="440"></a></td>
+      <td><a href="docs/screenshots/mobil.png"><img src="docs/screenshots/mobil.png" alt="VESTA mobil analiz" width="180"></a></td>
+    </tr>
+  </table>
+</details>
 
 ## Kaynak koddan ilk kurulum
 
