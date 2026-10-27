@@ -1,0 +1,33 @@
+VESTA — AÇMA / KAPATMA
+
+AÇMA (Terminal):
+cd /Users/a512/vesta/tehdit-ekrani
+./run.sh
+
+run.sh gerekiyorsa arayüzü önce kendisi kurar ve derler (web/dist yoksa
+npm install + npm run build çalıştırır). İlk açılış bu yüzden biraz sürebilir.
+
+Tarayıcı adresi:
+http://127.0.0.1:8000
+
+Giriş parolası yalnızca sizin okuyabildiğiniz ilk-giris.txt dosyasındadır.
+
+ARAYÜZDE DEĞİŞİKLİK YAPTIYSANIZ (yeniden derleme):
+cd /Users/a512/vesta/tehdit-ekrani/web
+npm run build
+
+Derlemeden sonra sunucu yeniden başlatılmadan değişiklik görünmez;
+./run.sh ile yeniden başlatın.
+
+KAPATMA:
+Uygulamanın çalıştığı Terminal penceresinde Ctrl+C tuşlarına basın.
+
+Terminal penceresini kaybettiyseniz önce 8000 portunu kullanan süreci görün:
+lsof -nP -iTCP:8000 -sTCP:LISTEN
+
+Çıktıdaki süreç Vesta'nın Python/uvicorn süreciyse PID değerini kullanarak kapatın:
+kill PID
+
+Örnek: PID 12345 ise "kill 12345".
+
+Not: Bu komutlar yalnızca Vesta'nın yerel HTTP sunucusu içindir. Diğer uygulamaların portlarını kapatmayın.
