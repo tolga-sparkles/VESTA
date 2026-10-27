@@ -2,6 +2,24 @@
 
 IP adresi veya alan adını AbuseIPDB, AlienVault OTX, VirusTotal, ThreatFox, URLhaus, T.C. Siber Güvenlik Başkanlığı, Shodan InternetDB ve MXToolbox kaynaklarında eşzamanlı arayan kişisel analiz paneli.
 
+## Ekran görüntüleri
+
+Görseller, gerçek servis sorgusu veya oturum bilgisi kullanılmadan temsili API yanıtlarıyla oluşturuldu. `203.0.113.42` belgeleme için ayrılmış bir IP adresidir; gösterilen risk puanı ve haber başlıkları gerçek istihbarat verisi değildir.
+
+### IP analizi
+
+![VESTA IP analizi: kaynak sonuçları, risk puanı, teknik profil ve açık portlar](docs/screenshots/analiz.png)
+
+### Haber akışı
+
+![VESTA haber akışı: kaynaklar, filtreler ve temsili haberler](docs/screenshots/haberler.png)
+
+### Giriş ve mobil görünüm
+
+<img src="docs/screenshots/giris.png" alt="VESTA konsola giriş ekranı" width="700">
+
+<img src="docs/screenshots/mobil.png" alt="VESTA mobil analiz görünümü" width="390">
+
 ## Kaynak koddan ilk kurulum
 
 Depo API anahtarı, giriş parolası, sertifika, veritabanı veya derlenmiş arayüz içermez. Yeni bir kopyada önce bağımlılıkları ve yerel yapılandırmayı hazırlayın:
