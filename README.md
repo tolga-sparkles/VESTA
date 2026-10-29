@@ -1,10 +1,25 @@
-# Vesta — tehdit sorgulama
+# VESTA
 
-IP adresi veya alan adını AbuseIPDB, AlienVault OTX, VirusTotal, ThreatFox, URLhaus, T.C. Siber Güvenlik Başkanlığı, Shodan InternetDB ve MXToolbox kaynaklarında eşzamanlı arayan kişisel analiz paneli.
+### Bir IP adresinin veya alan adının hikâyesini tek ekranda görün.
 
-## Ekran görüntüleri
+VESTA, şüpheli bir IP adresini veya alan adını araştırırken farklı sekmeler arasında kaybolmamanız için hazırlanmış, **Türkçe ve kendi ortamınızda çalışan bir siber tehdit istihbaratı panelidir**. Bir göstergeyi girin; yapılandırılmış kaynakların bulguları geldikçe ekranda belirsin. Ardından risk puanını, puanın hangi kaynaklardan geldiğini ve teknik ayrıntıları birlikte değerlendirin.
 
-Görseller, gerçek servis sorgusu veya oturum bilgisi kullanılmadan temsili API yanıtlarıyla oluşturuldu. `203.0.113.42` belgeleme için ayrılmış bir IP adresidir; gösterilen risk puanı ve haber başlıkları gerçek istihbarat verisi değildir.
+**Kimler için?** SOC analistleri, sistem yöneticileri, olay müdahale ekipleri ve bir adresin neden dikkat çektiğini hızlıca anlamak isteyen herkes.
+
+## Tek panelde neler var?
+
+| Analiz | Güvenlik gündemi |
+| --- | --- |
+| IP ve alan adı sorgusu; uygun kaynaklardan eşzamanlı sonuç | RSS ve resmî duyurulardan haber akışı |
+| Kaynak katkıları görülebilen 0–100 risk puanı | Haber, CVE ve IOC araması ile filtreler |
+| Açık portlar, olası zafiyetler ve IP teknik profili | NVD yayın tarihi ve CISA KEV bilgisiyle CVE Radar |
+| Yaklaşık IP konum haritası ve kaynaklar arası ülke farkları | Haberdeki uygun göstergeden analiz ekranına geçiş |
+
+Sonuçlar kaynak kaynak güncellenir; yavaş yanıt veren bir servis diğerlerini bekletmez. Masaüstü ve mobil görünüm ile açık ve koyu tema desteklenir.
+
+## Önizleme
+
+Görseller **temsili API yanıtlarıyla** üretildi; gerçek sorgu, API anahtarı veya oturum bilgisi içermez. Analiz ekranındaki `203.0.113.42` belgeleme için ayrılmış bir IP adresidir; gösterilen risk puanı ve haber başlıkları gerçek istihbarat verisi değildir.
 
 <table>
   <tr><th>IP analizi</th><th>Haber akışı</th></tr>
@@ -24,74 +39,66 @@ Görseller, gerçek servis sorgusu veya oturum bilgisi kullanılmadan temsili AP
   </table>
 </details>
 
-## Kaynak koddan ilk kurulum
+## Nasıl kullanılır?
 
-Depo API anahtarı, giriş parolası, sertifika, veritabanı veya derlenmiş arayüz içermez. Yeni bir kopyada önce bağımlılıkları ve yerel yapılandırmayı hazırlayın:
+1. VESTA adresini açıp kurulum sırasında belirlenen ortak parolayla giriş yapın.
+2. **Analiz** ekranına genel bir IP adresi veya alan adı yazın ve **Analiz Et** düğmesine basın.
+3. Gelen kaynak sonuçlarını, kısa bulguları ve ayrıntıları inceleyin. **Haberler** ekranından güncel kayıtları takip edin; uygun bir göstergeye tıklayarak analiz ekranına taşıyın.
+
+Panel, eşleşme, kayıt yok, desteklenmiyor, kota doldu ve hata durumlarını ayrı gösterir. **Risk puanı araştırma önceliği içindir; tek başına güvenlik kararı değildir.** Kayıt bulunmaması da adresin güvenli olduğunu kanıtlamaz. Açık portlar Shodan InternetDB'nin önceki gözlemleridir; VESTA canlı port taraması yapmaz. Haritadaki ülke merkezi IP'nin kesin fiziksel konumu değildir.
+
+## Veri kaynakları
+
+Analiz ekranı **AbuseIPDB, AlienVault OTX, VirusTotal, ThreatFox, URLhaus, T.C. Siber Güvenlik Başkanlığı, Shodan InternetDB ve MXToolbox** ile çalışır. Her kaynak yalnızca desteklediği gösterge türünde sorgulanır. Bazı servisler kendi API anahtarınızı gerektirir; yapılandırılmamış, yanıt vermeyen veya kotası dolan kaynaklar arayüzde açıkça belirtilir.
+
+Haberler ekranı RSS ve resmî bildirimleri toplar; isteğe bağlı yerel X kayıtlarını da gösterebilir. Aynı olaya ilişkin kayıtlar gruplanır. Haber önceliği ve doğrulama durumu ayrı gösterilir; haber puanı olayın gerçekleşme olasılığı değildir.
+
+## Kendi bilgisayarınızda kurulum
+
+**Gerekenler:** Python 3.10 veya üzeri, Node.js ve npm. Kaynakları kullanmak için ilgili servislerde kendi API erişiminiz olmalıdır. Bu depo gerçek anahtar, parola, sertifika veya derlenmiş arayüz içermez.
 
 ```sh
+git clone https://github.com/tolga-sparkles/VESTA.git
+cd VESTA
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 cp .env.example .env
 chmod 600 .env
 ```
 
-`.env` içindeki servis anahtarlarını kendi hesaplarınızdan doldurun. `APP_PASSWORD_HASH` için Argon2id özeti, `SESSION_SECRET` için rastgele bir değer üretin; aşağıdaki komutların çıktısını `.env` içindeki ilgili alanlara yazın:
+`.env` dosyasına kullanacağınız servislerin anahtarlarını ekleyin. Ortak giriş parolası için Argon2id özeti ve oturumlar için rastgele bir gizli değer oluşturup çıktıları sırasıyla `APP_PASSWORD_HASH` ve `SESSION_SECRET` alanlarına yazın:
 
 ```sh
 .venv/bin/python -c 'from getpass import getpass; from argon2 import PasswordHasher; print(PasswordHasher().hash(getpass("VESTA parolası: ")))'
 .venv/bin/python -c 'import secrets; print(secrets.token_hex(32))'
 ```
 
-Seçtiğiniz giriş parolasını güvenli bir yerde saklayın. `./run.sh` eksik frontend bağımlılıklarını kurup arayüzü derler. `twitter_pipeline/manuel` klasöründeki yerel X verileri isteğe bağlıdır ve bu depoya dahil değildir.
-
-## Bu bilgisayarda açma
-
-Terminalde bu klasöre girin:
+Parolanızı güvenli bir yerde saklayın. Ardından uygulamayı başlatın:
 
 ```sh
-cd /Users/a512/vesta/tehdit-ekrani
 ./run.sh
 ```
 
-Ardından tarayıcıda **http://127.0.0.1:8000** adresini açın. Bu bilgisayardaki mevcut kurulumun giriş parolası yalnızca sizin okuyabildiğiniz `ilk-giris.txt` dosyasındadır; dosya GitHub'a gönderilmez. Yeni kopyada kurulum sırasında seçtiğiniz parolayı kullanın. Sunucu sadece `127.0.0.1` üzerinde dinler; yerel ağdaki başka cihazlar erişemez.
+Tarayıcıda **http://127.0.0.1:8000** adresini açın. `run.sh` arayüz bağımlılıklarını gerektiğinde kurup derler; sunucu yalnızca bu bilgisayarda dinler. Kapatmak için Terminal'de **Ctrl+C** kullanın. Yerel ağda kullanmak için HTTPS kurulumu gerekir; örnek `Caddyfile` ve `run-https.sh` depoda bulunur.
 
-Arayüz `web/` klasöründeki React uygulamasıdır ve derlenmiş hali (`web/dist`) FastAPI tarafından sunulur. `web/dist` yoksa `run.sh` ilk açılışta bağımlılıkları kurar ve derler (`npm install` + `npm run build`). Arayüzde değişiklik yapıldığında yeniden derlemek için:
+## Gizlilik ve kullanım sınırları
 
-```sh
-cd /Users/a512/vesta/tehdit-ekrani/web
-npm run build
-```
+- API anahtarları sunucudaki `.env` dosyasında kalır; tarayıcıya gönderilmez. Giriş, parolanın Argon2id özetiyle doğrulanır.
+- Arama geçmişi tutulmaz. Yerel kullanım sayaçları yalnızca istek zamanlarını ve kaynak adlarını kaydeder. Sorguladığınız IP veya alan adı, sonuç almak için ilgili üçüncü taraf servislere gönderilir.
+- Yalnızca genel IPv4/IPv6 adresleri ve geçerli alan adları kabul edilir. Yerel/özel IP adresleri ve URL'ler reddedilir; dosya yüklenmez.
+- Uygulama, VirusTotal isteklerini ortak **4/dakika ve 500/24 saat** yerel kotasıyla sınırlar. Gerçek servis koşulları ve hesap kotanız farklı olabilir.
 
-API anahtarları bu klasördeki `.env` dosyasında tutulur. `.env` ve `ilk-giris.txt` dosyaları `600` iznine sahiptir ve Git dışında tutulur. Anahtar veya parola değiştirmek için `.env` içindeki ilgili değeri güncelleyin ve sunucuyu yeniden başlatın. Parola özeti Argon2id biçimindedir.
+Teknik çalışma mantığı, risk puanı kuralları ve kaynak bazlı ayrıntılar için [Yazılım Açıklaması](YAZILIM-ACIKLAMASI.md) dosyasına bakın.
 
-## Notlar
+<details>
+  <summary>Geliştirici komutları</summary>
 
-- Haberler modülü RSS, resmî bildirim ve yerel X kayıtlarını ayrı doğrulama durumlarıyla gösterir. Öncelik ve doğrulama birbirinden bağımsızdır; sıralama puanı gerçekleşme olasılığı değildir. Aynı olaya ait haberler kaynak bağlantıları ve zaman çizelgesiyle gruplanır.
-- CVE Radar ilk yayın tarihini NVD'den, bilinen istismar eşleşmesini CISA KEV kataloğundan alır. RSS tarihi yalnızca akışa eklenme tarihidir. Veriye erişilemezse tarih veya KEV durumu bilinmiyor olarak gösterilir. NVD sorguları istek başına en fazla beş kayıtla sınırlıdır; sonuçlar 24 saat, KEV kataloğu 12 saat önbellekte tutulur.
-- `GET /api/news` arama ve `source`, `content_type`, `priority`, `verification`, `region`, `active_exploitation`, `from_date`, `to_date`, `sort`, `page`, `page_size` filtrelerini destekler. Ham kayıtlar `items` içinde kalır; değerlendirme `evaluation`, tarih ayrımı `dates` ve olay ilişkileri `events` alanlarıyla döner. Haber kartındaki **VESTA'da Analiz Et** göstergesi Analiz ekranına taşır; sorguyu kullanıcı başlatır.
-- Kaynak paneli erişilebilirliği, son kontrolü, son başarılı çekimi, son içerik tarihini ve önbellek yaşını ayrı gösterir. Resmî kaynakta uzun süre yeni duyuru olmaması otomatik hata sayılmaz.
+  ```sh
+  .venv/bin/python -m unittest discover -s tests -v
+  cd web
+  npm test
+  npm run lint
+  npm run build
+  ```
 
-- Yalnızca genel IPv4/IPv6 adresleri ve geçerli alan adları kabul edilir. URL ve yerel IP adresleri dış servislere gönderilmez.
-- VirusTotal ücretsiz kotası bütün oturumlar için 4 istek/dakika ve 500 istek/24 saat olarak yönetilir. Sayaç yalnızca istek zamanlarını `.data/quota.sqlite3` içinde tutar.
-- Sorgu alanının altındaki kullanım satırı son 24 saatteki arama ve kaynak başına HTTP istek sayılarını gösterir. Bu sayılar `.data/usage.sqlite3` içinde IP veya alan adı saklanmadan tutulur. AbuseIPDB ücretsiz `check` sınırı 1.000/UTC gün olarak gösterilir; diğer kaynaklar için uygulama sabit kota varsaymaz.
-- Her kaynak sonucu geldikçe görünür. Eşleşme yokluğu güvenli olduğu anlamına gelmez.
-- Shodan InternetDB, genel IPv4 adresleri için açık port, olası zafiyet, hostname ve CPE verisi gösterir. Alan adı ve IPv6 sorgusunda destek dışı olarak işaretlenir. Bu veriler Shodan'ın önceki gözlemleridir; canlı port taraması yapılmaz.
-- IP haritası CARTO Dark Matter katmanını kullanır. `CARTO_BASEMAP_API_KEY` sunucudaki `.env` dosyasından okunur; tarayıcı harita karolarını oturum gerektiren `/api/map-tiles/` yolundan alır. Harita üzerinde OpenStreetMap ve CARTO atıfları görünür.
-- Genel risk puanı 0–100 aralığında basit bir önceliklendirme göstergesidir. IPv4 için AbuseIPDB (35), VirusTotal (25), OTX (10), ThreatFox (10), URLhaus (7), SGB (5) ve InternetDB zafiyetleri (8); IPv6 ve alan adı için desteklenen kaynaklara göre ayrı ağırlıklar kullanılır. Açık portlar puanı artırmaz. Yanıtlanmayan veya limit dolan kaynaklar için puan eklenmez ve sonuç **ön sonuç** olarak kalır. Katkılar panelde açılabilir.
-- Arama geçmişi tutulmaz. Anahtarlar tarayıcıya gönderilmez.
-- Yerel ağda kullanmak isterseniz ayrıca HTTPS kurulumu gerekir; `Caddyfile` ve `run-https.sh` bunun için saklandı. O durumda `.env` içine `APP_LOCAL_ONLY=0` ekleyin ve HTTPS sertifikasını kullanan cihazlarda güvenilir hale getirin.
-
-## Test
-
-Backend testleri:
-
-```sh
-.venv/bin/python -m unittest discover -s tests -v
-```
-
-Arayüz testleri ve denetimi (`web/` içinde):
-
-```sh
-npm test
-npm run lint
-```
+</details>
